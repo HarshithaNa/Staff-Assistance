@@ -1,0 +1,9 @@
+<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+    viewBox="0 0 40 40" fill="none">
+    <rect width="40" height="40" rx="8.33333" fill="#6846F6" fill-opacity="0.08" />
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M28.3334 27.1429V18.8345C28.3334 17.7497 27.9103 16.7077 27.1542 15.93L22.616 11.2622C21.8315 10.4553 20.754 10 19.6285 10H14.4445C12.9103 10 11.6667 11.2792 11.6667 12.8571V27.1429C11.6667 28.7208 12.9103 30 14.4445 30H25.5556C27.0897 30 28.3334 28.7208 28.3334 27.1429Z"
+        stroke="#6846F6" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M20 10.8333V15.1191C20 16.697 21.2437 17.9762 22.7778 17.9762H26.9444" stroke="#6846F6"
+        stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
