@@ -4,5 +4,6 @@ export const CHATINTERFACE = {
 
 export const PROMPTMESSAGES = {
   REPLACE: "replace",
-  YES:"yes"
+  YES:"yes",
+  NO:"no"
 };
