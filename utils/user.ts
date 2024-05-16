@@ -7,7 +7,7 @@ export const fetchUserDetails = async () => {
   //   data: { result },
   // } = await get<{ result: any }>(API.USER);
 
-  return user;
+  return user.result;
 };
 
 export const loginUser = async (email: string, password: string) => {
