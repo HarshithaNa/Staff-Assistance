@@ -18,13 +18,13 @@ export const getAllProjectsList = async () => {
   return projects;
 };
 
-export const filterProjects = (projects, message) => {
+export const filterProjects = (projects:any, message:any) => {
   console.log("message", message);
   const keywords = message.split(/\s+/);
-  const matches = [];
-  projects.forEach((project) => {
+  const matches : any = [];
+  projects.forEach((project:any) => {
     const projectName = project.project_name.toLowerCase().replace(/\s/g, "");
-    keywords.forEach((keyword) => {
+    keywords.forEach((keyword:any) => {
       const lowercaseKeyword = keyword.toLowerCase();
       if (projectName === lowercaseKeyword) {
         console.log(projectName + " " + lowercaseKeyword);
@@ -35,21 +35,30 @@ export const filterProjects = (projects, message) => {
   return matches;
 };
 
-export const checkForReplaceKeyword = (message) => {
+export const checkForReplaceKeyword = (message:any) => {
   console.log(message);
   const keywords = message.split(/\s+/);
-  return keywords.some((keyword) => {
+  return keywords.some((keyword:any) => {
     const lowercaseKeyword = keyword.toLowerCase();
     return lowercaseKeyword === PROMPTMESSAGES.REPLACE;
   });
 };
 
-export const checkForYesKeyword = (message) => {
+export const checkForYesKeyword = (message:any) => {
   console.log(message);
   const keywords = message.split(/\s+/);
-  return keywords.some((keyword) => {
+  return keywords.some((keyword:any) => {
     const lowercaseKeyword = keyword.toLowerCase();
     return lowercaseKeyword === PROMPTMESSAGES.YES;
+  });
+};
+
+export const checkForNoKeyword = (message:any) => {
+  console.log(message);
+  const keywords = message.split(/\s+/);
+  return keywords.some((keyword:any) => {
+    const lowercaseKeyword = keyword.toLowerCase();
+    return lowercaseKeyword === PROMPTMESSAGES.NO;
   });
 };
 
@@ -57,7 +66,7 @@ export const initiateProjectAllocation = async (id: string) => {
   return team
 };
 
-export const freezeTeamList = async (id: string, data: Array<Employee>) => {
+export const freezeTeamList = async (id: string, data: Array<any>) => {
   // console.log("dattaaa",data)
   // const {
   //   data: { result },

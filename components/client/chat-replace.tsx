@@ -3,10 +3,10 @@ import Image from "next/image";
   const ChatReplace = ({name,feedback,techStack} : {name: String, feedback:String, techStack: []}) => {
     return (
        <>
-        <div className="mt-4  border-2 border-[#B3A3FA] rounded-md inline-block">
-        <div className="p-4 border-b border-[#b3a3fa26]">
+        <div className="mt-2 inline-block">
+        <div className="p-2 border-b border-[#b3a3fa26]">
           <div className="flex justify-between text-white items-center text-center ">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 pl-2">
               <Image
                 alt=""
                 src="/avatar.svg"
@@ -21,7 +21,7 @@ import Image from "next/image";
           </div>
         </div>
         <div className="flex text-[#C8C8C8]">
-          <div className="p-4 w-1/4 border-r border-[#b3a3fa26] flex flex-col gap-6 min-w-36">
+          <div className="pl-2 p-4 w-1/4 border-r border-[#b3a3fa26] flex flex-col gap-6 min-w-36">
             <p>Skill sets</p>
             {feedback && <p>Feedback</p>}
           </div>
@@ -42,7 +42,7 @@ import Image from "next/image";
           </div>
         </div>
       </div>
-      <div className="py-4 whitespace-nowrap text-white text-sm">
+      <div className="py-4 whitespace-nowrap text-white text-m">
         Do you want to freeze the list? Yes/No
       </div>
       </>

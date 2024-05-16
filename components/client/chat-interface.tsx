@@ -1,15 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { CHAT_THEME } from "@/constants/chat-theme";
+import { cn } from "@/lib/utils";
 import Bot from "@/public/bot.svg";
 import Send from "@/public/send.svg";
 import {
+  checkForNoKeyword,
   checkForReplaceKeyword,
   checkForYesKeyword,
   fetchTeamList,
   filterProjects,
-  freezeTeamList,
   getAllProjectsList,
   initiateProjectAllocation,
   sendSecondaryPrompt,
@@ -45,7 +45,7 @@ const ChatInterface = () => {
   const [newMember, setNewMember] = useState<any>({});
   const [viewList, setViewList] = useState<any>({});
   const [requestType, setRequestType] = useState<String | null>(null);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const fetchData = useCallback(async () => {
     try {
       const userDetailsData = await fetchUserDetails();
@@ -97,7 +97,6 @@ const ChatInterface = () => {
   };
 
   const handleSubmitChat = async () => {
-    
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -113,92 +112,116 @@ const ChatInterface = () => {
 
     setIsResponseLoading(true);
 
-    let response = "";
+    let response: any = "";
 
-    if (selectedProject?.[0]) {
-      setSelectedProjects(selectedProject);
+    if (selectedProject?.[0] || checkForNoKeyword(message)) {
+      setIsResponseLoading(true);
+      setTimeout(async () => {
+        setSelectedProjects(selectedProject);
 
-      response = await initiateProjectAllocation(selectedProject?.[0]?._id);
-      setInitiatedProject(response);
+        response = await initiateProjectAllocation(selectedProject?.[0]?._id);
+        console.log("response in ");
+        setInitiatedProject(response);
 
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          isBot: true,
-          message: "Absolutely! Here is a result:",
-          result: response,
-          type: "initial_allocation",
-        },
-      ]);
-    }
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            isBot: true,
+            message: "Absolutely! Here is a result:",
+            result: response,
+            type: "initial_allocation",
+          },
+        ]);
+        setIsResponseLoading(false);
+      }, 3000);
+    } else if (checkForReplaceKeyword(message)) {
+      setIsResponseLoading(true);
+      setTimeout(async () => {
+        const response = await sendSecondaryPrompt(selectedProjects?.[0]?._id, {
+          engineering_team: {
+            team_structure: initiatedPRoject?.engineering_team?.team_structure,
+          },
+          tech_stacks: initiatedPRoject?.tech_stacks,
+          employee_name_to_replace_prompt: message,
+        });
 
-    if (checkForReplaceKeyword(message)) {
-      const response = await sendSecondaryPrompt(selectedProjects?.[0]?._id, {
-        engineering_team: {
-          team_structure: initiatedPRoject?.engineering_team?.team_structure,
-        },
-        tech_stacks: initiatedPRoject?.tech_stacks,
-        employee_name_to_replace_prompt: message,
-      });
+        setReplaceMember(response);
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            isBot: true,
+            message: "Absolutely! here is the replacement:",
+            result: response,
+            type: "replace",
+          },
+        ]);
 
-      setReplaceMember(response);
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          isBot: true,
-          message: "Absolutely! Here is a result:",
-          result: response,
-          type: "replace",
-        },
-      ]);
+        setPromptResponse(response);
+        setIsResponseLoading(false);
+      }, 3000);
+    } else if (checkForYesKeyword(message)) {
+      setIsResponseLoading(true);
+      console.log("is response loading", replaceMember);
+      setTimeout(async () => {
+        const newTeam = initiatedPRoject?.engineering_team?.team_structure.map(
+          (employee: any) => {
+            const employeeName = employee?.name?.toLowerCase();
 
-      setPromptResponse(response);
-    }
+            const oldEmployeeName =
+              replaceMember?.old_employee?.employee_name?.toLowerCase();
 
-    if (checkForYesKeyword(message)) {
-      const newTeam = initiatedPRoject?.engineering_team?.team_structure.map(
-        (employee) => {
-          const employeeName = employee.name.toLowerCase();
+            return employeeName === oldEmployeeName
+              ? {
+                  title: employee?.title,
+                  name: replaceMember?.new_employee?.employee_name,
 
-          const oldEmployeeName =
-            replaceMember?.old_employee.employee_name.toLowerCase();
+                  allocation: employee?.allocation,
+                }
+              : employee;
+          }
+        );
+        // setInitiatedProject(newTeam);
+        setNewMember(newTeam);
 
-          return employeeName === oldEmployeeName
-            ? {
-                title: employee.title,
-                name: replaceMember.new_employee.employee_name,
+        // await freezeTeamList(selectedProjects?.[0]?._id, newTeam);
 
-                allocation: employee.allocation,
-              }
-            : employee;
-        }
-      );
-      // setInitiatedProject(newTeam);
-      setNewMember(newTeam);
+        const freezedList = await fetchTeamList(selectedProjects?.[0]?._id);
+        setViewList(viewList);
 
-      // await freezeTeamList(selectedProjects?.[0]?._id, newTeam);
-
-      const freezedList = await fetchTeamList(selectedProjects?.[0]?._id);
-      setViewList(viewList);
-
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          isBot: true,
-          message: "Awesome! Team is freezed:",
-          result: freezedList,
-          type: "view",
-        },
-      ]);
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            isBot: true,
+            message: "Awesome! Team is freezed:",
+            result: freezedList,
+            type: "view",
+          },
+        ]);
+        setIsResponseLoading(false);
+      }, 2000);
+    } else {
+      setTimeout(async () => {
+        setIsResponseLoading(true);
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            isBot: true,
+            message: "Sorry! No result found:",
+            result: "",
+            type: "view",
+          },
+        ]);
+        setIsResponseLoading(false);
+      }, 5000);
     }
 
     setPromptResponse(response);
 
     setMessage("");
-    setIsResponseLoading(false);
+    // setIsResponseLoading(false);
   };
 
-  const handleMessageFromUser = (event) => {
+  const handleMessageFromUser = (event: any) => {
     event.preventDefault();
     setMessage(event.target.value);
   };
@@ -210,7 +233,7 @@ const ChatInterface = () => {
       <div className=" bg-stone-950 bottom-0 h-screen absolute left-24 right-1">
         <div
           ref={messagesContainerRef}
-          className="px-6 pt-6 pb-24 flex flex-col gap-8 overflow-y-auto h-full"
+          className="px-6 pt-6 pb-24 flex flex-col gap-8 overflow-y-auto h-[90%]"
         >
           {chatMessages.map((chatItem, index) => (
             <div
@@ -245,11 +268,16 @@ const ChatInterface = () => {
                     </div> */}
 
                     {chatItem?.type === "initial_allocation" ? (
-                      <ChatResponse
-                        dataResponse={
-                          chatItem?.result?.engineering_team?.team_structure
-                        }
-                      />
+                      <div>
+                        <ChatResponse
+                          dataResponse={
+                            chatItem?.result?.engineering_team?.team_structure
+                          }
+                        />
+                        <div className="py-4 whitespace-nowrap text-white text-m">
+                          Do you want to freeze the list? Yes/No
+                        </div>
+                      </div>
                     ) : chatItem?.type === "replace" ? (
                       <ChatReplace
                         name={chatItem.result.new_employee.employee_name}
@@ -279,16 +307,16 @@ const ChatInterface = () => {
         </div>
 
         <div className=" flex justify-center absolute bottom-6 left-12 right-5">
-           <div className="max-w-[75%] bg-stone-950 w-full flex justify-end items-center p-1.5 pl-4 rounded-xl border border-solid border-[#B3A3FA]">
-              <input
-                autoFocus
-                className="w-full bg-stone-950 border-none outline-none text-white placeholder-[#6B7B94]  "
-                placeholder="Type here..."
-                type="text"
-                ref={inputRef}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              <button
+          <div className="max-w-[75%] bg-stone-950 w-full flex justify-end items-center p-1.5 pl-4 rounded-xl border border-solid border-[#B3A3FA]">
+            <input
+              autoFocus
+              className="w-full bg-stone-950 border-none outline-none text-white placeholder-[#6B7B94]  "
+              placeholder="Type here..."
+              type="text"
+              ref={inputRef}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button
               ref={submitButtonRef}
               className={cn("p-2.5 rounded-lg", {
                 "bg-gray-400": isResponseLoading,
@@ -298,9 +326,9 @@ const ChatInterface = () => {
               onClick={handleSubmitChat}
               disabled={isResponseLoading ? true : false}
             >
-                <Send />
-              </button>
-            </div>
+              <Send />
+            </button>
+          </div>
         </div>
       </div>
     </div>

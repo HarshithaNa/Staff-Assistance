@@ -97,23 +97,24 @@ const ChatResponse = ({
   }
   // const chatResponse = Object.keys(dataResponse[0]);
   return (
+    <div>
     <div className="pt-4 inline-block" style={{ display: 'flex', minWidth: '1000px'}}>
       {!dataResponse.length ? (
         <Spinner />
       ) : (
-        <div className=" border rounded-md border-[#B3A3FA] inline-block">
+        <div className="inline-block">
           <header className="flex justify-between items-center">
             <div className="flex gap-8">
             </div>
           </header>
-          <main className="border border-[#B3A3FA] rounded-md pt-8 relative">
+          <main className="pt-2 relative">
             <ul role="list">
               {dataResponse?.map((item: any, index) => (
                 <li key={`${item}-${index + 1}`} role="list-item ">
-                  <div className="p-4 border-b border-[#b3a3fa26]">
-                    <h3 className="text-[#B3A3FA] pl-12">{item.title}</h3>
+                  <div className="pl-2 pt-2 pb-4 border-b border-[#b3a3fa26]">
+                    <h3 className="text-[#B3A3FA] pl-2">{item.title}</h3>
                     <div className="mt-4 grid grid-cols-3 text-white items-center text-center" style={{display:'flex',gap:'200px'}}>
-                      <div className="flex items-center gap-4 pl-12" style={{width:'300px'}}>
+                      <div className="flex items-center gap-4 pl-2" style={{width:'300px'}}>
                         <Image
                           alt=""
                           src="/avatar.svg"
@@ -155,6 +156,7 @@ const ChatResponse = ({
           </main>
         </div>
       )}
+      </div>
       </div>
   );
 };
