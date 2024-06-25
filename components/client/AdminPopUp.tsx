@@ -6,17 +6,11 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
 const AdminPopUp = () => {
-  const router = useRouter()
+  const router = useRouter();
   const handleSignOut = async () => {
-   
-    await signOut({ redirect: false });
-    
+    await signOut({ callbackUrl: "/signin" });
     router.push("/signin");
-    
-    // if (userDetail.name) {
-      console.log("logging out user")
-      await logoutUser();
-    //}
+    await logoutUser();
   };
 
   return (

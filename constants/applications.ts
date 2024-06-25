@@ -1,0 +1,4 @@
+export const BASE_URL = {
+  AI_STAFF_ASSISTANT_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  MOCK_BASE_URL: "http://35.94.127.35:4000",
+};

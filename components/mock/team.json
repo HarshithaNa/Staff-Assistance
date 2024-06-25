@@ -10,47 +10,47 @@
       {
         "title": "Frontend Lead (FE Lead)",
         "name": "Mihir Suchak",
-        "allocation": "100%"
+        "allocation": ["HTML", "CSS/SCSS", "ReactJS"]
       },
       {
         "title": "Software Engineer (FE SE)",
         "name": "Aster Savio Fernandez",
-        "allocation": "100%"
+        "allocation": ["HTML", "CSS/SCSS", "NextJS"]
       },
       {
         "title": "Backend Lead (BE Lead)",
         "name": "Yadulla Naresh Reddy",
-        "allocation": "50%"
+        "allocation": ["JavaScript", "NodeJS", "AWS"]
       },
       {
         "title": "Backend Engineer (BE)",
         "name": "Shweta Ravi Talapalli",
-        "allocation": "100%"
+        "allocation": ["Java", "NodeJS", "AWS"]
       },
       {
         "title": "Quality Engineer (QA SSE)",
         "name": "Pallavi Kalasur",
-        "allocation": "100%"
+        "allocation": ["Postman", "BrowerStack", "Appium"]
       },
       {
         "title": "Staff Engineer",
         "name": "Shashanka N",
-        "allocation": "50%"
+        "allocation": []
       },
       {
-        "title": "Project Manager",
+        "title": "Engineering Manager",
         "name": "Vinay Sridhar",
-        "allocation": "100%"
+        "allocation": []
       },
       {
         "title": "Product Manager",
         "name": "Utpreksha Singh",
-        "allocation": "50%"
+        "allocation": []
       },
       {
         "title": "Director of Engineering",
         "name": "Momshad Khan",
-        "allocation": "25%"
+        "allocation": []
       }
     ]
   },
@@ -63,4 +63,4 @@
     "Next JS",
     "Mongo DB"
   ]
-  }
+}

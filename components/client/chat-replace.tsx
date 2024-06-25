@@ -1,54 +1,132 @@
 import Image from "next/image";
+import Spinner from "../ui/spinner";
 
-  const ChatReplace = ({name,feedback,techStack} : {name: String, feedback:String, techStack: []}) => {
-    return (
-       <>
-        <div className="mt-2 inline-block">
-        <div className="p-2 border-b border-[#b3a3fa26]">
-          <div className="flex justify-between text-white items-center text-center ">
-            <div className="flex items-center gap-4 pl-2">
-              <Image
-                alt=""
-                src="/avatar.svg"
-                width={56}
-                height={56}
-                style={{ width: "3.5rem", height: "3.5rem" }}
-              />
-              <div>
-                <p className="text-left text-base font-medium">{name}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex text-[#C8C8C8]">
-          <div className="pl-2 p-4 w-1/4 border-r border-[#b3a3fa26] flex flex-col gap-6 min-w-36">
-            <p>Skill sets</p>
-            {feedback && <p>Feedback</p>}
-          </div>
-          <div className="p-4 w-full flex flex-col gap-6">
-            <div className="flex gap-2 min-w-36">
-              {techStack
-              // .map((stack: string) => (
-              //   <span
-              //     key={`${stack}`}
-              //     className="px-3 bg-[#6846F626] rounded-md"
-              //   >
-              //     {stack}
-              //   </span>
-              // ))
-              }
-            </div>
-            {feedback && <p>{feedback}</p>}
-          </div>
-        </div>
-      </div>
-      <div className="py-4 whitespace-nowrap text-white text-m">
-        Do you want to freeze the list? Yes/No
-      </div>
-      </>
-    
-    )
-
+const ChatResponse = ({
+  dataResponse,
+}: {
+  dataResponse: { [key: string]: any }[];
+}) => {
+  if (!dataResponse || dataResponse.length === 0) {
+    return <div>No data available</div>;
   }
 
-  export default ChatReplace;
+  return (
+    <div>
+      <div
+        className="pt-4 inline-block"
+        style={{ display: "flex", minWidth: "1000px" }}
+      >
+        {!dataResponse.length ? (
+          <Spinner />
+        ) : (
+          <div className="inline-block">
+            <header className="flex justify-between items-center">
+              <div className="flex gap-8"></div>
+            </header>
+            <main className="pt-2 relative">
+              <ul role="list">
+                {dataResponse?.map((item: any, index) => (
+                  <li key={`${item}-${index + 1}`} role="list-item ">
+                    <div className="pl-2 pt-2 pb-4 border-b border-[#b3a3fa26]">
+                      <div
+                        className="mt-4 grid grid-cols-3 text-white items-center text-center"
+                        style={{ display: "flex", gap: "200px" }}
+                      >
+                        <div
+                          className="flex items-center gap-4 pl-2"
+                          style={{ width: "300px" }}
+                        >
+                          <Image
+                            alt=""
+                            src="/avatar.svg"
+                            width={48}
+                            height={48}
+                            style={{ width: "3rem", height: "3rem" }}
+                          />
+                          <p
+                            className="text-left text-base font-medium"
+                            style={{ overflowWrap: "break-word" }}
+                          >
+                            {item.name}
+                          </p>
+                        </div>
+                        <p className="text-left text-base text-[#C8C8C8] pl-20 min-w-fit">
+                          {item.title}
+                        </p>
+
+                        <div>
+                          {/* {item.allocation.map((all: any) => {
+                              <span className="text-sm text-[#9DA8B8]">
+                                {all}
+                              </span>;
+                            })} */}
+                          {item.allocation.length > 1 && (
+                            <div>
+                              <span
+                                className="pl-2 pr-2"
+                                style={{
+                                  height: "10px",
+                                  width: "auto",
+                                  backgroundColor: "#A19ABD",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                {item.allocation[0]}
+                              </span>
+                              <span
+                                className="pl-2 pr-2"
+                                style={{
+                                  height: "10px",
+                                  width: "auto",
+                                  backgroundColor: "#A19ABD",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                {item.allocation[1]}{" "}
+                              </span>
+                              <span
+                                className="pl-2 pr-2"
+                                style={{
+                                  height: "10px",
+                                  width: "auto",
+                                  backgroundColor: "#A19ABD",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                {item.allocation[2]}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* TODO: Add Later */}
+                        {/* <p className="text-sm text-[#9DA8B8] flex items-center justify-center gap-2">
+                        <span>
+                          <Suitcase />
+                        </span>
+                        16y 9m
+                      </p> */}
+                        <div className="flex items-center justify-center gap-4">
+                          {/* <span className="text-sm text-[#9DA8B8]">
+                              {item.allocation[0]}
+                              </span>
+                              <span className="text-sm text-[#9DA8B8]">
+                              {item.allocation[1]}
+                              </span>
+                              <span className="text-sm text-[#9DA8B8]">
+                              {item.allocation[2]}
+                              </span> */}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </main>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+export default ChatResponse;

@@ -3,15 +3,13 @@
 import { CHAT_THEME } from "@/constants/chat-theme";
 import { cn } from "@/lib/utils";
 import Bot from "@/public/bot.svg";
+import Copy from "@/public/copy.svg";
 import Send from "@/public/send.svg";
+
 import {
-  checkForNoKeyword,
-  checkForReplaceKeyword,
-  checkForYesKeyword,
-  fetchTeamList,
-  filterProjects,
   getAllProjectsList,
   initiateProjectAllocation,
+  sendChatResponse,
   sendSecondaryPrompt,
 } from "@/utils/chatInterface";
 import { hasAdminAccess } from "@/utils/hasAdminAccess";
@@ -44,6 +42,8 @@ const ChatInterface = () => {
   const [replaceMember, setReplaceMember] = useState<any>({});
   const [newMember, setNewMember] = useState<any>({});
   const [viewList, setViewList] = useState<any>({});
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const [requestType, setRequestType] = useState<String | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fetchData = useCallback(async () => {
@@ -100,7 +100,7 @@ const ChatInterface = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-    const selectedProject = filterProjects(projects, message);
+    const selectedProject = "chopt";
 
     setChatMessages((prev) => [
       ...prev,
@@ -114,12 +114,12 @@ const ChatInterface = () => {
 
     let response: any = "";
 
-    if (selectedProject?.[0] || checkForNoKeyword(message)) {
+    if (selectedProject) {
       setIsResponseLoading(true);
       setTimeout(async () => {
         setSelectedProjects(selectedProject);
 
-        response = await initiateProjectAllocation(selectedProject?.[0]?._id);
+        response = await sendChatResponse(selectedProject);
         console.log("response in ");
         setInitiatedProject(response);
 
@@ -134,71 +134,6 @@ const ChatInterface = () => {
         ]);
         setIsResponseLoading(false);
       }, 3000);
-    } else if (checkForReplaceKeyword(message)) {
-      setIsResponseLoading(true);
-      setTimeout(async () => {
-        const response = await sendSecondaryPrompt(selectedProjects?.[0]?._id, {
-          engineering_team: {
-            team_structure: initiatedPRoject?.engineering_team?.team_structure,
-          },
-          tech_stacks: initiatedPRoject?.tech_stacks,
-          employee_name_to_replace_prompt: message,
-        });
-
-        setReplaceMember(response);
-        setChatMessages((prev) => [
-          ...prev,
-          {
-            isBot: true,
-            message: "Absolutely! here is the replacement:",
-            result: response,
-            type: "replace",
-          },
-        ]);
-
-        setPromptResponse(response);
-        setIsResponseLoading(false);
-      }, 3000);
-    } else if (checkForYesKeyword(message)) {
-      setIsResponseLoading(true);
-      console.log("is response loading", replaceMember);
-      setTimeout(async () => {
-        const newTeam = initiatedPRoject?.engineering_team?.team_structure.map(
-          (employee: any) => {
-            const employeeName = employee?.name?.toLowerCase();
-
-            const oldEmployeeName =
-              replaceMember?.old_employee?.employee_name?.toLowerCase();
-
-            return employeeName === oldEmployeeName
-              ? {
-                  title: employee?.title,
-                  name: replaceMember?.new_employee?.employee_name,
-
-                  allocation: employee?.allocation,
-                }
-              : employee;
-          }
-        );
-        // setInitiatedProject(newTeam);
-        setNewMember(newTeam);
-
-        // await freezeTeamList(selectedProjects?.[0]?._id, newTeam);
-
-        const freezedList = await fetchTeamList(selectedProjects?.[0]?._id);
-        setViewList(viewList);
-
-        setChatMessages((prev) => [
-          ...prev,
-          {
-            isBot: true,
-            message: "Awesome! Team is freezed:",
-            result: freezedList,
-            type: "view",
-          },
-        ]);
-        setIsResponseLoading(false);
-      }, 2000);
     } else {
       setTimeout(async () => {
         setIsResponseLoading(true);
@@ -206,7 +141,7 @@ const ChatInterface = () => {
           ...prev,
           {
             isBot: true,
-            message: "Sorry! No result found:",
+            message: "Sorry! No result found",
             result: "",
             type: "view",
           },
@@ -218,7 +153,67 @@ const ChatInterface = () => {
     setPromptResponse(response);
 
     setMessage("");
-    // setIsResponseLoading(false);
+  };
+
+  const formatData = (data: any, type: string) => {
+    const formatMember = (member: any) => {
+      const allocation =
+        member.allocation.length > 0 ? `${member.allocation.join("| ")}` : "";
+      return [member.name, member.title, allocation]
+        .filter((field) => field)
+        .join(", ");
+    };
+
+    if (type === "initial_allocation") {
+      const Data = data?.engineering_team?.team_structure
+        .map((member: any) => formatMember(member))
+        .join("\n");
+      return `Name, Title, Allocation\n${Data}`;
+    } else if (type === "replace") {
+      const newEmployee = data.new_employee;
+      const employeeData = [
+        newEmployee.employee_name || "",
+        newEmployee.tech_stack || "",
+      ]
+        .filter((field) => field)
+        .join(", ");
+      return `Name, Skill Sets\n${employeeData}`;
+    } else if (type === "view") {
+      const Data = data.map((member: any) => formatMember(member)).join("\n");
+      return `Name, Title, Allocation\n${Data}`;
+    }
+
+    return "";
+  };
+
+  const copyToClipboard = (data: any, type: string) => {
+    const copyText = formatData(data, type);
+    navigator.clipboard
+      .writeText(copyText)
+      .then(() => {
+        alert("Text copied to clipboard!");
+        setTooltipVisible(false);
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
+
+  const handleMouseEnter = () => {
+    if (!clicked) {
+      setTooltipVisible(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setTooltipVisible(false);
+    setClicked(false);
+  };
+
+  const handleClick = (result: any, type: string) => {
+    copyToClipboard(result, type);
+    setClicked(true);
+    setTooltipVisible(false);
   };
 
   const handleMessageFromUser = (event: any) => {
@@ -278,19 +273,27 @@ const ChatInterface = () => {
                           Do you want to freeze the list? Yes/No
                         </div>
                       </div>
-                    ) : chatItem?.type === "replace" ? (
-                      <ChatReplace
-                        name={chatItem.result.new_employee.employee_name}
-                        feedback={
-                          chatItem.result.manager_rating
-                            ? chatItem.result.manager_rating
-                            : chatItem.result.feedback
-                        }
-                        techStack={chatItem.result.new_employee.tech_stack}
-                      />
                     ) : (
                       <ChatResponse dataResponse={chatItem?.result} />
                     )}
+
+                    <div className="relative group">
+                      <button
+                        onClick={() =>
+                          handleClick(chatItem.result, chatItem.type)
+                        }
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        className="text-white px-0.5 py-1 rounded-md"
+                      >
+                        <Copy />
+                      </button>
+                      {tooltipVisible && !clicked && (
+                        <span className="absolute bottom-0 left-3 transform translate-y-full -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          Copy
+                        </span>
+                      )}
+                    </div>
 
                     {/* <TableView dataResponse={promptResponse.result}/> */}
                   </div>

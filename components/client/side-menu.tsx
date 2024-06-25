@@ -1,33 +1,60 @@
 "use client";
 
+import { BASE_URL } from "@/constants/applications";
 import { CHAT_THEME } from "@/constants/chat-theme";
 import { PAGE } from "@/constants/page-paths";
 import File from "@/public/file.svg";
 import Logo from "@/public/logo.svg";
 import Logout from "@/public/logout.svg";
-import { fetchUserDetails, logoutUser } from "@/utils/user";
+import Menubar from "@/public/menubar.svg";
+import { logoutUser } from "@/utils/user";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 
 const SideMenu = () => {
-  const { data: session,status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isSignOut, setIsSignOut] = useState<boolean | null>(null);
+  const sideMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if(status === "unauthenticated" || session === undefined) {
+    if (status === "unauthenticated" || session === undefined) {
       router.push("/signin");
     }
-  },[router, session, status]) 
+  }, [router, session, status]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        event.target &&
+        sideMenuRef.current &&
+        !sideMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const handleSignOut = async () => {
     setIsSignOut(false);
     await signOut({ callbackUrl: "/signin" });
     router.push("/signin");
     await logoutUser();
+  };
+
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean | null>(null);
+
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -50,6 +77,46 @@ const SideMenu = () => {
               <File />
             </Link>
           </li>
+          <div ref={sideMenuRef}>
+            <li className="pt-5 relative">
+              <Link aria-label="menubar" onClick={handleMenuClick} href={""}>
+                <Menubar />
+              </Link>
+              {isMenuOpen && (
+                <div className="absolute flex flex-col items-center left-20 top-0 mt-5 w-32 bg-[#191A1F] rounded-lg shadow-lg z-10">
+                  <ul className="content-center">
+                    <li
+                      className="py-4 hover:text-white"
+                      style={{
+                        color: CHAT_THEME.MENU_BAR_FONT_COLOR,
+                      }}
+                    >
+                      <Link
+                        href={PAGE.APPLICATION1}
+                        className="pb-5 border-b hover:text-white"
+                        style={{
+                          borderColor: CHAT_THEME.SIDE_MENU_BORDER_COLOR,
+                        }}
+                      >
+                        Application 1
+                      </Link>
+                    </li>
+                    <li
+                      className="py-4 hover:text-white"
+                      style={{ color: CHAT_THEME.MENU_BAR_FONT_COLOR }}
+                    >
+                      <Link
+                        href={PAGE.APPLICATION2}
+                        className="hover:text-white"
+                      >
+                        Application 2
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </li>
+          </div>
         </ul>
 
         <ul role="list" className="mt-2.5">

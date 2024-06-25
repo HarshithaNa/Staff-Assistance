@@ -1,51 +1,51 @@
 {
-    "statusCode": 200,
-    "message": "Freezed resources list for project id 65dc5c774fa0acadeab103f0 Fetched Successfully",
-    "result": [
-        {
-            "title": "Frontend Lead (FE Lead)",
-            "name": "Mihir Suchak",
-            "allocation": "100%"
-          },
-          {
-            "title": "Software Engineer (FE SE)",
-            "name": "Aster Savio Fernandez",
-            "allocation": "100%"
-          },
-          {
-            "title": "Backend Lead (BE Lead)",
-            "name": "Anjali",
-            "allocation": "50%"
-          },
-          {
-            "title": "Backend Engineer (BE)",
-            "name": "Shweta Ravi Talapalli",
-            "allocation": "100%"
-          },
-          {
-            "title": "Quality Engineer (QA SSE)",
-            "name": "Pallavi Kalasur",
-            "allocation": "100%"
-          },
-          {
-            "title": "Staff Engineer",
-            "name": "Shashanka N",
-            "allocation": "50%"
-          },
-          {
-            "title": "Project Manager",
-            "name": "Vinay Sridhar",
-            "allocation": "100%"
-          },
-          {
-            "title": "Product Manager",
-            "name": "Utpreksha Singh",
-            "allocation": "50%"
-          },
-          {
-            "title": "Director of Engineering",
-            "name": "Momshad Khan",
-            "allocation": "25%"
-          }
-    ]
+  "statusCode": 200,
+  "message": "Freezed resources list for project id 65dc5c774fa0acadeab103f0 Fetched Successfully",
+  "result": [
+    {
+      "title": "Frontend Lead (FE Lead)",
+      "name": "Mihir Suchak",
+      "allocation": ["HTML", "CSS/SCSS", "ReactJS"]
+    },
+    {
+      "title": "Software Engineer (FE SE)",
+      "name": "Aster Savio Fernandez",
+      "allocation": ["HTML", "CSS/SCSS", "NextJS"]
+    },
+    {
+      "title": "Backend Lead (BE Lead)",
+      "name": "Anjali",
+      "allocation": ["NodeJS"]
+    },
+    {
+      "title": "Backend Engineer (BE)",
+      "name": "Shweta Ravi Talapalli",
+      "allocation": ["Java", "NodeJS", "AWS"]
+    },
+    {
+      "title": "Quality Engineer (QA SSE)",
+      "name": "Pallavi Kalasur",
+      "allocation": ["Postman", "BrowerStack", "Appium"]
+    },
+    {
+      "title": "Staff Engineer",
+      "name": "Shashanka N",
+      "allocation": []
+    },
+    {
+      "title": "Engineering Manager",
+      "name": "Vinay Sridhar",
+      "allocation": []
+    },
+    {
+      "title": "Product Manager",
+      "name": "Utpreksha Singh",
+      "allocation": []
+    },
+    {
+      "title": "Director of Engineering",
+      "name": "Momshad Khan",
+      "allocation": []
+    }
+  ]
 }

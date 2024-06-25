@@ -1,54 +1,54 @@
 {
-    "status": 200,
-    "message": "Projects data fetched successfully.",
-    "result": [
-        {
-            "_id": "6602960d71c5edd9cbbd18c3",
-            "project_name": "Chopt",
-            "start_date": "2024-03-08T00:00:00.000Z",
-            "duration": "7 Months",
-            "project_status": "Not Yet Started",
-            "project_allocation_status": "Earmarked"
-        },
-        {
-            "_id": "660506fc12f9299d7d31fc24",
-            "project_name": "Lucid",
-            "start_date": "2024-03-08T00:00:00.000Z",
-            "duration": "2 Months",
-            "project_status": "Not Yet Started",
-            "project_allocation_status": "Unallocated"
-        },
-        {
-            "_id": "65dc5d3a4fa0acadeab103f2",
-            "project_name": "Gen AI POC",
-            "start_date": "2024-03-03T00:00:00.000Z",
-            "duration": "6 Months",
-            "project_status": "Not Yet Started",
-            "project_allocation_status": "Unallocated"
-        },
-        {
-            "_id": "65e59780790d14df4a60ffb6",
-            "project_name": "Grail",
-            "start_date": "2024-03-03T00:00:00.000Z",
-            "duration": "8 Months",
-            "project_status": "Not Yet Started",
-            "project_allocation_status": "Unallocated"
-        },
-        {
-            "_id": "65dc5cf04fa0acadeab103f1",
-            "project_name": "Scout",
-            "start_date": "2022-02-01T00:00:00.000Z",
-            "duration": "4 Months",
-            "project_status": "Not Yet Started",
-            "project_allocation_status": "UnAllocated"
-        },
-        {
-            "_id": "65dc5c774fa0acadeab103f0",
-            "project_name": "Loreal",
-            "start_date": "2024-03-03T00:00:00.000Z",
-            "duration": "4 Months",
-            "project_status": "Ongoing",
-            "project_allocation_status": "Allocated"
-        }
-    ]
+  "status": 200,
+  "message": "Projects data fetched successfully.",
+  "result": [
+    {
+      "_id": "6602960d71c5edd9cbbd18c3",
+      "project_name": "Chopt",
+      "start_date": "2024-03-08T00:00:00.000Z",
+      "duration": "7 Months",
+      "project_status": "Not Yet Started",
+      "project_allocation_status": "Earmarked"
+    },
+    {
+      "_id": "660506fc12f9299d7d31fc24",
+      "project_name": "Lucid",
+      "start_date": "2024-03-08T00:00:00.000Z",
+      "duration": "2 Months",
+      "project_status": "Not Yet Started",
+      "project_allocation_status": "Unallocated"
+    },
+    {
+      "_id": "65dc5d3a4fa0acadeab103f2",
+      "project_name": "Gen AI POC",
+      "start_date": "2024-03-03T00:00:00.000Z",
+      "duration": "6 Months",
+      "project_status": "Not Yet Started",
+      "project_allocation_status": "Unallocated"
+    },
+    {
+      "_id": "65e59780790d14df4a60ffb6",
+      "project_name": "Grail",
+      "start_date": "2024-03-03T00:00:00.000Z",
+      "duration": "8 Months",
+      "project_status": "Not Yet Started",
+      "project_allocation_status": "Unallocated"
+    },
+    {
+      "_id": "65dc5cf04fa0acadeab103f1",
+      "project_name": "Scout",
+      "start_date": "2022-02-01T00:00:00.000Z",
+      "duration": "4 Months",
+      "project_status": "Not Yet Started",
+      "project_allocation_status": "UnAllocated"
+    },
+    {
+      "_id": "65dc5c774fa0acadeab103f0",
+      "project_name": "Loreal",
+      "start_date": "2024-03-03T00:00:00.000Z",
+      "duration": "4 Months",
+      "project_status": "Ongoing",
+      "project_allocation_status": "Allocated"
+    }
+  ]
 }

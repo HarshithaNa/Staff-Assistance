@@ -1,10 +1,14 @@
+export const ROUTE = {
+  ROUTE_VERSION: "v1",
+  ROUTE_BASE_PATH: "api",
+};
 export const API = {
-  FREEZE_LIST: "/project/freeze-list",
-  LOGIN: "/auth/login",
-  LOGOUT: "/auth/logout",
-  PROJECT_ALLOCATION: "/project/initiate-allocation",
-  PROJECT: "/project",
-  SECONDARY_PROMPT: "/project/suggest-alternate-employee-for-project",
-  USER: "/user",
-  LOGIN_SSO: "/auth"
+  FREEZE_LIST: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/project/freeze-list`,
+  LOGIN: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/auth/login1`,
+  LOGOUT: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/auth/logout`,
+  PROJECT_ALLOCATION: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/project/initiate-allocation`,
+  PROJECT: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/project`,
+  SECONDARY_PROMPT: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/project/suggest-alternate-employee-for-project`,
+  USER: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/user`,
+  LOGIN_SSO: `/${ROUTE.ROUTE_VERSION}/${ROUTE.ROUTE_BASE_PATH}/auth`,
 };

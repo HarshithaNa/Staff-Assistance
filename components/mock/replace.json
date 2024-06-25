@@ -1,11 +1,11 @@
 {
-    "old_employee": {
-        "employee_name": "Yadulla Naresh Reddy",
-        "tech_stack": "Node JS"
-    },
-    "new_employee": {
-        "employee_name": "Anjali",
-        "tech_stack": "Node JS",
-        "manager_rating": "Areas of Improvement: While showcasing proficiency in backend development using Node.js, competence in API development, and holding a Docker Certification for implementing DevOps practices, the Software Engineer could focus on continuous exploration of advanced DevOps techniques for enhanced project efficiency in the Golden Gate Development project."
-    }
+  "old_employee": {
+    "employee_name": "Yadulla Naresh Reddy",
+    "tech_stack": "Node JS"
+  },
+  "new_employee": {
+    "employee_name": "Anjali",
+    "tech_stack": "Node JS",
+    "manager_rating": "Areas of Improvement: While showcasing proficiency in backend development using Node.js, competence in API development, and holding a Docker Certification for implementing DevOps practices, the Software Engineer could focus on continuous exploration of advanced DevOps techniques for enhanced project efficiency in the Golden Gate Development project."
+  }
 }
