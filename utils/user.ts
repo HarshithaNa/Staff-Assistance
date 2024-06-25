@@ -1,12 +1,13 @@
 import { API } from "@/constants/api-routes";
 import { get, post, remove } from "./axios";
+import user from "../components/mock/user.json"
 
 export const fetchUserDetails = async () => {
-  const {
-    data: { result },
-  } = await get<{ result: any }>(API.USER);
+  // const {
+  //   data: { result },
+  // } = await get<{ result: any }>(API.USER);
 
-  return result;
+  return user.result;
 };
 
 export const loginUser = async (email: string, password: string) => {
