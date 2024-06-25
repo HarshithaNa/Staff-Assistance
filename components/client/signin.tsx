@@ -23,7 +23,7 @@ const SignInComponent = () => {
   const fetchData = async () => {
     try {
       if (status) {
-       await postUser(session?.user?.email || " ");
+      //  await postUser(session?.user?.email || " ");
         router.push("/chat-bot");
       }
     } catch (error) {
